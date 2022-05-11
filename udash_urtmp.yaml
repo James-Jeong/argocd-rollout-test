@@ -12,11 +12,12 @@ spec:
       labels:
         app: udash_urtmp
     spec:
+      hostNetwork: true
       containers:
-      - name: udash_urtmp
-        image: localhost:80/udash_urtmp:latest
-        ports:
-        - containerPort: 5858
+        - name: udash_urtmp
+        image: ec2-52-78-226-224.ap-northeast-2.compute.amazonaws.com:1443/ustream/udash-urtmp
+      imagePullSecrets:
+        - name: harbor
   minReadySeconds: 30
   revisionHistoryLimit: 3
   strategy:
@@ -24,8 +25,8 @@ spec:
       maxSurge: "25%"
       maxUnavailable: 0
       steps:
-      - setWeight: 10
-      - pause:
-          duration: 1h # 1 hour
-      - setWeight: 20
-      - pause: {} # pause indefinitely
+        - setWeight: 10
+        - pause:
+            duration: 1h # 1 hour
+        - setWeight: 20
+        - pause: {} # pause indefinitely
